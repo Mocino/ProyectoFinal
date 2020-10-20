@@ -1083,7 +1083,7 @@ public class restaurante extends javax.swing.JFrame {
             double can = Double.parseDouble(String.valueOf(TBVentas.getModel().getValueAt(i, 5)));
             TotalPagar = TotalPagar+can;
         }
-        Labeltotal.setText(String.format("%.2f", TotalPagar)); //
+        Labeltotal.setText(String.format("%.2f", TotalPagar)); 
     }
 
     private void LimpiarVenta()
