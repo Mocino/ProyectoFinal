@@ -66,6 +66,21 @@ public class PlatillosC {
         return plat;
     }
     
+    public boolean ActualizarStock(int cant, String cod){
+        String sql = "UPDATE platillo SET Stock_Platillo = ? WHERE Id_Platillo = ?";
+        try {
+            con = cn.getConection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, cant);
+            ps.setString(2, cod);
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }
+    }
+    
     public List ListarPlatillo(){
         List<Platillos> ListPla = new ArrayList();
         String sql = "SELECT * FROM platillo";
@@ -85,7 +100,7 @@ public class PlatillosC {
                 ListPla.add(pla);
             }
         } 
-        catch (Exception e) 
+        catch (SQLException e) 
         {
             System.out.println("Error en ListarPlatillo: "+e.toString());
         }

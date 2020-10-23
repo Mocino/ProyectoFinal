@@ -3,25 +3,39 @@ package Interfaz;
 
 import Modelo.Cliente;
 import Modelo.ClienteC;
+import Modelo.Conexion;
 import Modelo.Empleado;
 import Modelo.EmpleadoC;
+import Modelo.Factura;
+import Modelo.FacturaC;
 import Modelo.Platillos;
 import Modelo.PlatillosC;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.TabableView;
 
 
 public class restaurante extends javax.swing.JFrame {
-    
+    Date fechaVenta = new Date();
+    String fechaAct = new SimpleDateFormat("yyyy-MM-dd").format(fechaVenta);
+
     Cliente cli = new Cliente();
     ClienteC cliC = new ClienteC();
     Empleado Emp = new Empleado();
     EmpleadoC EmpL = new EmpleadoC();
     Platillos Pla = new Platillos();
     PlatillosC PlaC = new PlatillosC();
+    Factura Fac = new Factura();
+    FacturaC F = new FacturaC();
     
     DefaultTableModel modelo = new DefaultTableModel();
     DefaultTableModel tmp = new DefaultTableModel();
@@ -72,6 +86,7 @@ public class restaurante extends javax.swing.JFrame {
         }
         TBEmpleado.setModel(modelo);
     }
+    
     public void ListarPlatillos()
     {
         List<Platillos> ListarPla = PlaC.ListarPlatillo();
@@ -88,6 +103,22 @@ public class restaurante extends javax.swing.JFrame {
             modelo.addRow(ob);
         }
         TBPlatillos.setModel(modelo);
+    }
+    
+    public void ListarFacturas()
+    {
+        List<Factura> ListarFAC = F.ListarFacturas();
+        modelo = (DefaultTableModel) TBFactura.getModel();
+        Object[] ob = new Object[4];
+        for(int i = 0 ; i<ListarFAC.size(); i++)
+        {
+            ob[0] = ListarFAC.get(i).getId_Fac();
+            ob[1] = ListarFAC.get(i).getCliente_Fac();
+            ob[2] = ListarFAC.get(i).getTotal_Fac();
+            ob[3] = ListarFAC.get(i).getFecha_Fac();
+            modelo.addRow(ob);
+        }
+        TBFactura.setModel(modelo);
     }
     
     public void LimpiarTabla(){
@@ -117,13 +148,13 @@ public class restaurante extends javax.swing.JFrame {
         txtplatilloVentas = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        txtDescripccionVenta = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         txtCantidadVenta = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         txtStockVenta = new javax.swing.JTextField();
         txtPrecioVenta = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
+        txtDescripccionVenta = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         txtIdClienteVenta = new javax.swing.JTextField();
@@ -135,7 +166,8 @@ public class restaurante extends javax.swing.JFrame {
         txtDirVenta = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         Labeltotal = new javax.swing.JLabel();
-        btnEliminar = new javax.swing.JButton();
+        btnEliminarVenta = new javax.swing.JButton();
+        btnCrearPDF = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         btnCliente = new javax.swing.JButton();
         btnEmpleado = new javax.swing.JButton();
@@ -161,11 +193,15 @@ public class restaurante extends javax.swing.JFrame {
         txtPrecio_Pla = new javax.swing.JTextField();
         txtStock_Pla = new javax.swing.JTextField();
         CBEstado_Pla = new javax.swing.JComboBox<>();
-        btnGuardar_Pla = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        txtID_pla = new javax.swing.JTextField();
+        btnGuardarPlatillo = new javax.swing.JButton();
+        btnActualizarPlatillo = new javax.swing.JButton();
+        btnEliminarPlatillo = new javax.swing.JButton();
+        btnBuscarPlatillo = new javax.swing.JButton();
+        txtbuscaridplatillo = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        TBFactura = new javax.swing.JTable();
         btnCVenta = new javax.swing.JButton();
         btnCreacionCyE = new javax.swing.JButton();
         brnConfigurarClientes = new javax.swing.JButton();
@@ -210,9 +246,6 @@ public class restaurante extends javax.swing.JFrame {
 
         jLabel11.setText("Descripcion");
 
-        txtDescripccionVenta.setEditable(false);
-        txtDescripccionVenta.setBackground(new java.awt.Color(204, 204, 204));
-
         jLabel13.setText("Cantidad");
 
         txtCantidadVenta.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -231,6 +264,9 @@ public class restaurante extends javax.swing.JFrame {
 
         jLabel19.setText("Precio");
 
+        txtDescripccionVenta.setEditable(false);
+        txtDescripccionVenta.setBackground(new java.awt.Color(204, 204, 204));
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -246,9 +282,9 @@ public class restaurante extends javax.swing.JFrame {
                     .addComponent(txtplatilloVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDescripccionVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel11)
+                    .addComponent(txtDescripccionVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(89, 89, 89)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel19)
@@ -262,7 +298,7 @@ public class restaurante extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtStockVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,14 +311,16 @@ public class restaurante extends javax.swing.JFrame {
                     .addComponent(jLabel14)
                     .addComponent(jLabel19)
                     .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtplatilloVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIDVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDescripccionVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtStockVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(1, 1, 1)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtCantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtStockVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtIDVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtplatilloVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDescripccionVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -358,11 +396,19 @@ public class restaurante extends javax.swing.JFrame {
 
         Labeltotal.setText("__________");
 
-        btnEliminar.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        btnEliminar.setText("X");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminarVenta.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        btnEliminarVenta.setText("X");
+        btnEliminarVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
+                btnEliminarVentaActionPerformed(evt);
+            }
+        });
+
+        btnCrearPDF.setIcon(new javax.swing.ImageIcon("E:\\Documentos\\NetBeansProjects\\Restaurante1\\src\\main\\java\\IMG\\impre.png")); // NOI18N
+        btnCrearPDF.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnCrearPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearPDFActionPerformed(evt);
             }
         });
 
@@ -376,12 +422,14 @@ public class restaurante extends javax.swing.JFrame {
                     .addGroup(JPANELinterfazLayout.createSequentialGroup()
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnEliminarVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(JPANELinterfazLayout.createSequentialGroup()
                         .addGroup(JPANELinterfazLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPANELinterfazLayout.createSequentialGroup()
                                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(105, 105, 105)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCrearPDF)
+                                .addGap(14, 14, 14)
                                 .addComponent(jLabel9)
                                 .addGap(18, 18, 18)
                                 .addComponent(Labeltotal))
@@ -394,7 +442,7 @@ public class restaurante extends javax.swing.JFrame {
             .addGroup(JPANELinterfazLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(JPANELinterfazLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminarVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -403,20 +451,23 @@ public class restaurante extends javax.swing.JFrame {
                     .addGroup(JPANELinterfazLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(Labeltotal)
                         .addComponent(jLabel9))
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCrearPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         JPanelinterfaz.addTab("tab1", JPANELinterfaz);
 
-        btnCliente.setIcon(new javax.swing.ImageIcon("E:\\Documentos\\NetBeansProjects\\Restaurante1\\src\\cliente.png")); // NOI18N
+        btnCliente.setIcon(new javax.swing.ImageIcon("E:\\Documentos\\NetBeansProjects\\Restaurante1\\src\\main\\java\\IMG\\cliente.png")); // NOI18N
+        btnCliente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClienteActionPerformed(evt);
             }
         });
 
-        btnEmpleado.setIcon(new javax.swing.ImageIcon("E:\\Documentos\\NetBeansProjects\\Restaurante1\\src\\empleado.png")); // NOI18N
+        btnEmpleado.setIcon(new javax.swing.ImageIcon("E:\\Documentos\\NetBeansProjects\\Restaurante1\\src\\main\\java\\IMG\\empleado.png")); // NOI18N
+        btnEmpleado.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnEmpleado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEmpleadoActionPerformed(evt);
@@ -546,6 +597,11 @@ public class restaurante extends javax.swing.JFrame {
                 "Id Platillo", "Platillo", "Descripcion", "Precio", "Stock", "Estado"
             }
         ));
+        TBPlatillos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TBPlatillosMouseClicked(evt);
+            }
+        });
         Table3.setViewportView(TBPlatillos);
         if (TBPlatillos.getColumnModel().getColumnCount() > 0) {
             TBPlatillos.getColumnModel().getColumn(0).setPreferredWidth(60);
@@ -567,6 +623,8 @@ public class restaurante extends javax.swing.JFrame {
         jLabel7.setText("Stock");
 
         CBEstado_Pla.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Elija Estado del Platillo", "Activo", "Inactivo" }));
+
+        txtID_pla.setBackground(new java.awt.Color(204, 204, 204));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -591,9 +649,12 @@ public class restaurante extends javax.swing.JFrame {
                                     .addComponent(jLabel7)
                                     .addComponent(txtStock_Pla, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtDescrip_Pla, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CBEstado_Pla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(CBEstado_Pla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtID_pla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -615,22 +676,38 @@ public class restaurante extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPrecio_Pla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtStock_Pla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CBEstado_Pla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CBEstado_Pla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtID_pla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnGuardar_Pla.setText("Guardar");
-        btnGuardar_Pla.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarPlatillo.setText("Guardar");
+        btnGuardarPlatillo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardar_PlaActionPerformed(evt);
+                btnGuardarPlatilloActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Actualizar");
+        btnActualizarPlatillo.setText("Actualizar");
+        btnActualizarPlatillo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarPlatilloActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Eliminar");
+        btnEliminarPlatillo.setText("Eliminar");
+        btnEliminarPlatillo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarPlatilloActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Buscar");
+        btnBuscarPlatillo.setText("Buscar");
+        btnBuscarPlatillo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarPlatilloActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -641,16 +718,18 @@ public class restaurante extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Table3, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtbuscaridplatillo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnBuscarPlatillo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)
+                                .addComponent(btnActualizarPlatillo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnEliminarPlatillo, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnGuardar_Pla, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnGuardarPlatillo, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -661,10 +740,11 @@ public class restaurante extends javax.swing.JFrame {
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar_Pla)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2)
-                    .addComponent(jButton4))
+                    .addComponent(btnGuardarPlatillo)
+                    .addComponent(btnEliminarPlatillo)
+                    .addComponent(btnActualizarPlatillo)
+                    .addComponent(btnBuscarPlatillo)
+                    .addComponent(txtbuscaridplatillo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Table3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -672,15 +752,31 @@ public class restaurante extends javax.swing.JFrame {
 
         JPanelinterfaz.addTab("tab5", jPanel5);
 
+        TBFactura.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID Factura", "Cliente", "Total", "Fecha"
+            }
+        ));
+        jScrollPane2.setViewportView(TBFactura);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 699, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(237, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 301, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(165, 165, 165))
         );
 
         JPanelinterfaz.addTab("tab6", jPanel1);
@@ -807,10 +903,12 @@ public class restaurante extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfigurarPlatillosActionPerformed
 
     private void btnVerVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerVentasActionPerformed
+        LimpiarTabla();
+        ListarFacturas();
         JPanelinterfaz.setSelectedIndex(5);
     }//GEN-LAST:event_btnVerVentasActionPerformed
 
-    private void btnGuardar_PlaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar_PlaActionPerformed
+    private void btnGuardarPlatilloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarPlatilloActionPerformed
         if(!"".equals(txtNombre_pla.getText()) && !"".equals(txtDescrip_Pla.getText()) && !"".equals(txtPrecio_Pla.getText()) && !"".equals(txtStock_Pla.getText()))
         {
             Pla.setNombre_Pla(txtNombre_pla.getText());
@@ -838,7 +936,7 @@ public class restaurante extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null, "Rellene los Campos, Porfavor");
         }
-    }//GEN-LAST:event_btnGuardar_PlaActionPerformed
+    }//GEN-LAST:event_btnGuardarPlatilloActionPerformed
 
     private void txtIDVentasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDVentasKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER)
@@ -956,12 +1054,157 @@ public class restaurante extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtIdClienteVentaKeyPressed
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        modelo =(DefaultTableModel) TBVentas.getModel();
-        modelo.removeRow(TBVentas.getSelectedRow());
-        TotalPagar();
-        txtIDVentas.requestFocus();
-    }//GEN-LAST:event_btnEliminarActionPerformed
+    private void btnEliminarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarVentaActionPerformed
+        
+            modelo =(DefaultTableModel) TBVentas.getModel();
+            modelo.removeRow(TBVentas.getSelectedRow());
+            TotalPagar();
+            txtIDVentas.requestFocus();
+        
+    }//GEN-LAST:event_btnEliminarVentaActionPerformed
+
+    private void btnEliminarPlatilloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarPlatilloActionPerformed
+
+            try {
+                if(!"".equals(txtID_pla.getText()))
+                {
+                        Conexion ObjC = new Conexion();
+                        Connection cone = ObjC.getConection();
+                        PreparedStatement ps;
+
+                        int fila = TBPlatillos.getSelectedRow();
+                        String cod = TBPlatillos.getValueAt(fila, 0).toString();
+
+                        ps = cone.prepareStatement("DELETE FROM platillo WHERE Id_Platillo = ?");
+                        ps.setString(1, cod);
+                        ps.execute();
+
+                        modelo.removeRow(fila);
+
+                        txtID_pla.setText("");
+                        JOptionPane.showMessageDialog(null, "Dato Eliminado");
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Seleccione un dato para Eliminar");
+                }    
+
+            } catch (SQLException e) {
+                System.out.println("Error en borrar:"+e);
+            }
+        
+    }//GEN-LAST:event_btnEliminarPlatilloActionPerformed
+
+    private void TBPlatillosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TBPlatillosMouseClicked
+        int fila = TBPlatillos.rowAtPoint(evt.getPoint());
+        txtID_pla.setText(TBPlatillos.getValueAt(fila, 0).toString());
+        txtNombre_pla.setText(TBPlatillos.getValueAt(fila, 1).toString());
+        txtDescrip_Pla.setText(TBPlatillos.getValueAt(fila, 2).toString());
+        txtPrecio_Pla.setText(TBPlatillos.getValueAt(fila, 3).toString());
+        txtStock_Pla.setText(TBPlatillos.getValueAt(fila, 4).toString());
+        CBEstado_Pla.setSelectedItem(TBPlatillos.getValueAt(fila, 5).toString());
+    }//GEN-LAST:event_TBPlatillosMouseClicked
+
+    
+    private void btnActualizarPlatilloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarPlatilloActionPerformed
+        try {
+           if(!"".equals(txtID_pla.getText()))
+           {
+                if(!"".equals(txtNombre_pla.getText()) && !"".equals(txtDescrip_Pla.getText()) && !"".equals(txtPrecio_Pla.getText()) && !"".equals(txtStock_Pla.getText()))
+                {
+                    Conexion ObjC = new Conexion();
+                    Connection cone = ObjC.getConection();
+                    PreparedStatement ps;
+                    ResultSet rs;
+
+                    ps = cone.prepareStatement("UPDATE platillo SET  Nombre_Platillo=?, Descripcion_Platillo=?, Precio_Platillo=?, Stock_Platillo=?, Estado_Platillo=? WHERE Id_Platillo=?");
+
+                    ps.setString(1, txtNombre_pla.getText());
+                    ps.setString(2, txtDescrip_Pla.getText());
+                    ps.setDouble(3, Double.parseDouble(txtPrecio_Pla.getText()));
+                    ps.setInt(4, Integer.parseInt(txtStock_Pla.getText()));
+                    ps.setString(5, CBEstado_Pla.getSelectedItem().toString());
+                    ps.setString(6, txtID_pla.getText());
+
+                    ps.executeUpdate();
+                    
+                        Limpiar();
+                        LimpiarTabla();
+                        ListarPlatillos();
+                        JOptionPane.showMessageDialog(null, "Modificado");
+                    txtID_pla.setText("");
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Rellene los datos");
+                }
+           }
+           else
+           {
+               JOptionPane.showMessageDialog(null, "Seleccione un dato para Actualizar");
+           }
+        } 
+        catch (Exception e) 
+        {
+            System.out.println("Error en Actualizar Platillo: "+e);
+        }
+    }//GEN-LAST:event_btnActualizarPlatilloActionPerformed
+
+    private void btnBuscarPlatilloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPlatilloActionPerformed
+        try {
+            if(!"".equals(txtbuscaridplatillo.getText()))
+            {
+                Conexion ObjC = new Conexion();
+                Connection cone = ObjC.getConection();
+                PreparedStatement ps;
+                ResultSet rs;
+
+                ps=cone.prepareStatement("SELECT * FROM platillo WHERE Id_platillo=?");
+                ps.setInt(1, Integer.parseInt(txtbuscaridplatillo.getText()));
+                rs = ps.executeQuery();
+                if(rs.next())
+                { 
+                    txtNombre_pla.setText(rs.getString("Nombre_Platillo"));
+                    txtDescrip_Pla.setText(rs.getString("Descripcion_Platillo"));
+                    txtPrecio_Pla.setText(rs.getString("Precio_Platillo"));
+                    txtStock_Pla.setText(rs.getString("Stock_Platillo"));
+                    CBEstado_Pla.setSelectedItem(rs.getString("Estado_Platillo"));
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "No existe ese id");
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Ingrese ID");
+            }
+        } catch (Exception e) {
+            System.out.println("Error en buscar platillo: "+e);
+        }
+    }//GEN-LAST:event_btnBuscarPlatilloActionPerformed
+
+    private void btnCrearPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPDFActionPerformed
+        if(TBVentas.getRowCount() > 0)
+        {
+            if(!"".equals(txtNombreVenta.getText()))
+            {
+                JOptionPane.showMessageDialog(null, "Venta Hecha¡");
+                RegistrarFactura();
+                //ActualizarStock();
+                LimpiarVenta();
+                LimpiarTBVenta();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Ingrese un Id de un cliente que exista");
+            }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Ingrese productos");
+        }
+    }//GEN-LAST:event_btnCrearPDFActionPerformed
 
     void Limpiar()
     {
@@ -1013,24 +1256,26 @@ public class restaurante extends javax.swing.JFrame {
     private javax.swing.JLabel Labeltotal;
     private javax.swing.JTable TBCliente;
     private javax.swing.JTable TBEmpleado;
+    private javax.swing.JTable TBFactura;
     private javax.swing.JTable TBPlatillos;
     private javax.swing.JTable TBVentas;
     private javax.swing.JScrollPane Table1;
     private javax.swing.JScrollPane Table2;
     private javax.swing.JScrollPane Table3;
     private javax.swing.JButton brnConfigurarClientes;
+    private javax.swing.JButton btnActualizarPlatillo;
+    private javax.swing.JButton btnBuscarPlatillo;
     private javax.swing.JButton btnCVenta;
     private javax.swing.JButton btnCliente;
     private javax.swing.JButton btnConfigurarPlatillos;
     private javax.swing.JButton btnConfigurariEmpleados;
     private javax.swing.JButton btnCreacionCyE;
-    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnCrearPDF;
+    private javax.swing.JButton btnEliminarPlatillo;
+    private javax.swing.JButton btnEliminarVenta;
     private javax.swing.JButton btnEmpleado;
-    private javax.swing.JButton btnGuardar_Pla;
+    private javax.swing.JButton btnGuardarPlatillo;
     private javax.swing.JButton btnVerVentas;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1058,11 +1303,13 @@ public class restaurante extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txtCantidadVenta;
     private javax.swing.JTextField txtDescrip_Pla;
     private javax.swing.JTextField txtDescripccionVenta;
     private javax.swing.JTextField txtDirVenta;
     private javax.swing.JTextField txtIDVentas;
+    private javax.swing.JTextField txtID_pla;
     private javax.swing.JTextField txtIdClienteVenta;
     private javax.swing.JTextField txtNombreVenta;
     private javax.swing.JTextField txtNombre_pla;
@@ -1071,6 +1318,7 @@ public class restaurante extends javax.swing.JFrame {
     private javax.swing.JTextField txtStockVenta;
     private javax.swing.JTextField txtStock_Pla;
     private javax.swing.JTextField txtTelVenta;
+    private javax.swing.JTextField txtbuscaridplatillo;
     private javax.swing.JTextField txtplatilloVentas;
     // End of variables declaration//GEN-END:variables
     
@@ -1095,6 +1343,39 @@ public class restaurante extends javax.swing.JFrame {
         txtPrecioVenta.setText("");
         txtCantidadVenta.setText("");
         txtStockVenta.setText("");
+        txtIdClienteVenta.setText("");
+        txtNombreVenta.setText("");
+        txtTelVenta.setText("");
+        txtDirVenta.setText("");
     }
+    
+    private void LimpiarTBVenta() {
+        tmp = (DefaultTableModel) TBVentas.getModel();
+        int fila = TBVentas.getRowCount();
+        for (int i = 0; i < fila; i++) {
+            tmp.removeRow(0);
+        }
+    }
+    
+    private void RegistrarFactura()
+    { 
+        double monto = TotalPagar;
+        Fac.setCliente_Fac(txtNombreVenta.getText());
+        Fac.setTotal_Fac(monto);
+        Fac.setFecha_Fac(fechaAct);
+        F.RegistrarFactura(Fac);
+    }
+    
+    private void ActualizarStock()
+    {
+         for (int i = 0; i < TBVentas.getRowCount(); i++) {
+            String cod = TBVentas.getValueAt(i, 0).toString();
+            int cant = Integer.parseInt(TBVentas.getValueAt(i, 3).toString());
+            Pla = PlaC.BuscarPlatillo(cod);
+            int StockActual = Pla.getStock_Pla() - cant;
+            PlaC.ActualizarStock(StockActual, cod);
+        }
+    }
+    
 }
 
