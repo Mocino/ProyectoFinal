@@ -15,6 +15,23 @@ public class FacturaC {
     ResultSet rs;
     int r;
     
+    
+    public int IdFactura()
+    {
+        int id = 0;
+        String sql = "SELECT MAX(Id_Factura) FROM factura";
+        try {
+            con = cn.getConection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }        
+        } catch (Exception e) {
+        }
+        return id;
+    }
+    
     public int RegistrarFactura(Factura F)
     {
         
@@ -64,4 +81,6 @@ public class FacturaC {
         }        
         return ListFac;
     }
+    
+    
 }

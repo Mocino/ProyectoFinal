@@ -10,7 +10,22 @@ import Modelo.Factura;
 import Modelo.FacturaC;
 import Modelo.Platillos;
 import Modelo.PlatillosC;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +36,6 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.TabableView;
 
 
 public class restaurante extends javax.swing.JFrame {
@@ -44,6 +58,7 @@ public class restaurante extends javax.swing.JFrame {
 
     public restaurante() {
         initComponents();
+        
     }
     
     public void ListarCliente(){
@@ -389,7 +404,7 @@ public class restaurante extends javax.swing.JFrame {
                     .addComponent(txtNombreVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTelVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDirVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24))
+                .addGap(21, 21, 21))
         );
 
         jLabel9.setText("TOTAL:");
@@ -767,8 +782,8 @@ public class restaurante extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(237, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -843,7 +858,7 @@ public class restaurante extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(117, Short.MAX_VALUE)
+                .addContainerGap(133, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JPanelinterfaz, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -1191,7 +1206,8 @@ public class restaurante extends javax.swing.JFrame {
             {
                 JOptionPane.showMessageDialog(null, "Venta Hecha¡");
                 RegistrarFactura();
-                //ActualizarStock();
+                ActualizarStock();
+                pdf();
                 LimpiarVenta();
                 LimpiarTBVenta();
             }
@@ -1376,6 +1392,151 @@ public class restaurante extends javax.swing.JFrame {
             PlaC.ActualizarStock(StockActual, cod);
         }
     }
-    
+    private void pdf()
+    {
+        try {
+            int id = F.IdFactura();
+            FileOutputStream archivo; 
+            File file = new File("src/main/java/pdf/factura"+id+".pdf");
+            archivo = new FileOutputStream(file);
+            Document doc = new Document(); 
+            PdfWriter.getInstance(doc, archivo);
+            doc.open();
+            Image img = Image.getInstance("src/main/java/IMG/cafe.png");
+            
+            Paragraph fecha = new Paragraph();
+            fecha.add(Chunk.NEWLINE);
+            Date date = new Date();
+            fecha.add("Fecha: "+ new SimpleDateFormat("dd/MM/yyyy").format(date)+"\n\n");
+            
+            PdfPTable Encabezado = new PdfPTable(4);
+            Encabezado.setWidthPercentage(100);
+            Encabezado.getDefaultCell().setBorder(0);
+            float[] ColumnaEncabezado = new float[] {20f, 30f, 70f, 40f};
+            Encabezado.setWidths(ColumnaEncabezado);
+            Encabezado.setHorizontalAlignment(Element.ALIGN_LEFT);
+            
+            Encabezado.addCell(img);
+            
+            String nom = "Restaurante";
+            String Tel = "55685063";
+            String dir = "Rabinal";
+            
+            
+            Encabezado.addCell("");
+            Encabezado.addCell("Nombre:"+nom+"\nTelefono:"+Tel+"\nDireccion:"+dir);
+            Encabezado.addCell(fecha);
+            doc.add(Encabezado);
+            
+            Paragraph cli = new Paragraph();
+            cli.add(Chunk.NEWLINE);
+            cli.add("Datos de los clientes"+"\n\n");
+            doc.add(cli);
+            
+            PdfPTable TBcli = new PdfPTable(4);
+            TBcli.setWidthPercentage(100);
+            TBcli.getDefaultCell().setBorder(0);
+            float[] columnacli = new float[]{20f, 50f, 70f, 40f};
+            TBcli.setWidths(columnacli);
+            TBcli.setHorizontalAlignment(Element.ALIGN_LEFT);
+            PdfPCell cl1 = new PdfPCell(new Phrase("Id"));
+            PdfPCell cl2 = new PdfPCell(new Phrase("Nombre"));
+            PdfPCell cl3 = new PdfPCell(new Phrase("Telefono"));
+            PdfPCell cl4 = new PdfPCell(new Phrase("Direccion"));
+            
+            cl1.setBorder(0);
+            cl2.setBorder(0);
+            cl3.setBorder(0);
+            cl4.setBorder(0);
+            
+            cl1.setBackgroundColor(BaseColor.RED);
+            cl2.setBackgroundColor(BaseColor.RED);
+            cl3.setBackgroundColor(BaseColor.RED);
+            cl4.setBackgroundColor(BaseColor.RED);
+            
+            TBcli.addCell(cl1);
+            TBcli.addCell(cl2);
+            TBcli.addCell(cl3);
+            TBcli.addCell(cl4);
+            
+            TBcli.addCell(txtIdClienteVenta.getText());
+            TBcli.addCell(txtNombreVenta.getText());
+            TBcli.addCell(txtTelVenta.getText());
+            TBcli.addCell(txtDirVenta.getText());
+            
+            doc.add(TBcli);
+            
+            PdfPTable TBpla = new PdfPTable(5);
+            TBpla.setWidthPercentage(100);
+            TBpla.getDefaultCell().setBorder(0);
+            float[] columnapro = new float[]{40f, 40f, 30f, 30f, 30f};
+            TBpla.setWidths(columnapro);
+            TBpla.setHorizontalAlignment(Element.ALIGN_LEFT);
+            
+            PdfPCell pro1 = new PdfPCell(new Phrase("Platillo"));
+            PdfPCell pro2 = new PdfPCell(new Phrase("Descripcion"));
+            PdfPCell pro3 = new PdfPCell(new Phrase("Cantidad"));
+            PdfPCell pro4 = new PdfPCell(new Phrase("Precio U"));
+            PdfPCell pro5 = new PdfPCell(new Phrase("Precio T"));
+            
+            pro1.setBorder(0);
+            pro2.setBorder(0);
+            pro3.setBorder(0);
+            pro4.setBorder(0);
+            pro5.setBorder(0);
+            
+            pro1.setBackgroundColor(BaseColor.GRAY);
+            pro2.setBackgroundColor(BaseColor.GRAY);
+            pro3.setBackgroundColor(BaseColor.GRAY);
+            pro4.setBackgroundColor(BaseColor.GRAY);
+            pro5.setBackgroundColor(BaseColor.GRAY);
+            
+            TBpla.addCell(pro1);
+            TBpla.addCell(pro2);
+            TBpla.addCell(pro3);
+            TBpla.addCell(pro4);
+            TBpla.addCell(pro5);
+            
+            for(int i = 0; i< TBVentas.getRowCount(); i++)
+            {
+                String platillo = TBVentas.getValueAt(i, 1).toString();
+                String descrip = TBVentas.getValueAt(i, 2).toString();
+                String cant = TBVentas.getValueAt(i, 3).toString();
+                String preU = TBVentas.getValueAt(i, 4).toString();
+                String subT = TBVentas.getValueAt(i, 5).toString();
+                
+                TBpla.addCell(platillo);
+                TBpla.addCell(descrip);
+                TBpla.addCell(cant);
+                TBpla.addCell(preU);
+                TBpla.addCell(subT);
+            }
+            doc.add(TBpla);
+            
+            Paragraph info = new Paragraph();
+            info.add(Chunk.NEWLINE);
+            info.add("Cuenta: "+TotalPagar);
+            info.setAlignment(Element.ALIGN_RIGHT);
+            doc.add(info);
+            
+            Paragraph firma = new Paragraph();
+            firma.add(Chunk.NEWLINE);
+            firma.add("Cancelacion Firma\n\n");
+            firma.add("---------------------");
+            firma.setAlignment(Element.ALIGN_CENTER);
+            doc.add(firma);
+            
+            Paragraph mensaje = new Paragraph();
+            mensaje.add(Chunk.NEWLINE);
+            mensaje.add("Gracias por su compra");
+            mensaje.setAlignment(Element.ALIGN_CENTER);
+            doc.add(mensaje);
+            
+            doc.close();
+            archivo.close();
+        } catch (DocumentException | IOException e) {
+            System.out.println(e.toString());
+        }
+    }
 }
 
