@@ -198,6 +198,7 @@ public class Registrar_Empleado extends javax.swing.JFrame {
         //Id_Empleado, Nombre_Empleado, Apellido_Empleado, Correo_Empleado, Edad_Empleado, Genero_Empleado, Estado_Empleado;
         if(!"".equals(txtNombre_Emp.getText()) && !"".equals(txtApellido_E.getText()) && !"".equals(txtCorreo.getText()) && !"".equals(txtEdad_E.getText()))
         {
+            
             emp.setNombre_E(txtNombre_Emp.getText());
             emp.setApellido_E(txtApellido_E.getText());
             emp.setCorreo_E(txtCorreo.getText());
@@ -217,11 +218,19 @@ public class Registrar_Empleado extends javax.swing.JFrame {
             }
             else
             {
+                
+                if(JOptionPane.showConfirmDialog(null, "Guardar Datos?", "Confirmar", 1)==0)
+                {
                 emp.setGenero_E(opG);
                 emp.setEstado_E(opE);
                 empL.RegistrarEmpleado(emp);
-                JOptionPane.showMessageDialog(null, "Cliente Guardado");
+                JOptionPane.showMessageDialog(null, "Empleado Guardado");
                 limpiar();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Empleado no Guardado");
+                }
             }
         }
         else

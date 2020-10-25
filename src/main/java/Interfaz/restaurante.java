@@ -8,6 +8,7 @@ import Modelo.Empleado;
 import Modelo.EmpleadoC;
 import Modelo.Factura;
 import Modelo.FacturaC;
+import Modelo.Login;
 import Modelo.Platillos;
 import Modelo.PlatillosC;
 import com.itextpdf.text.BaseColor;
@@ -55,11 +56,21 @@ public class restaurante extends javax.swing.JFrame {
     DefaultTableModel tmp = new DefaultTableModel();
     int item;
     double TotalPagar = 0.00;
-
-    public restaurante() {
+    
+    public restaurante(){
         initComponents();
-        
     }
+    
+    public restaurante(Login priv){
+        initComponents();
+        if(priv.getTipo_Emp_U().equals("Asistente")){
+            btnConfigurarPlatillos.setEnabled(false);
+            btnConfigurariEmpleados.setEnabled(false);
+            brnConfigurarClientes.setEnabled(false);
+        }
+    }
+
+    
     
     public void ListarCliente(){
         List<Cliente> ListarCli = cliC.ListarCliente();
@@ -223,6 +234,7 @@ public class restaurante extends javax.swing.JFrame {
         btnConfigurariEmpleados = new javax.swing.JButton();
         btnConfigurarPlatillos = new javax.swing.JButton();
         btnVerVentas = new javax.swing.JButton();
+        btnRegistrarAdmin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -468,7 +480,7 @@ public class restaurante extends javax.swing.JFrame {
                         .addComponent(jLabel9))
                     .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCrearPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
 
         JPanelinterfaz.addTab("tab1", JPANELinterfaz);
@@ -498,30 +510,32 @@ public class restaurante extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addComponent(btnCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(btnCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41)
-                .addComponent(btnEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addComponent(btnEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(194, 194, 194)
+                .addGap(189, 189, 189)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
-                .addGap(152, 152, 152))
+                .addGap(141, 141, 141))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(32, 32, 32))
         );
 
         JPanelinterfaz.addTab("tab2", jPanel2);
@@ -553,13 +567,13 @@ public class restaurante extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Table1, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
+                .addComponent(Table1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(174, Short.MAX_VALUE)
+                .addContainerGap(241, Short.MAX_VALUE)
                 .addComponent(Table1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -591,13 +605,13 @@ public class restaurante extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Table2, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
+                .addComponent(Table2, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(174, Short.MAX_VALUE)
+                .addContainerGap(241, Short.MAX_VALUE)
                 .addComponent(Table2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -731,7 +745,7 @@ public class restaurante extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Table3, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
+                    .addComponent(Table3, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -761,8 +775,8 @@ public class restaurante extends javax.swing.JFrame {
                     .addComponent(btnBuscarPlatillo)
                     .addComponent(txtbuscaridplatillo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Table3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(Table3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         JPanelinterfaz.addTab("tab5", jPanel5);
@@ -783,15 +797,15 @@ public class restaurante extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(165, 165, 165))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(98, 98, 98))
         );
 
         JPanelinterfaz.addTab("tab6", jPanel1);
@@ -838,6 +852,13 @@ public class restaurante extends javax.swing.JFrame {
             }
         });
 
+        btnRegistrarAdmin.setText("Registrar Admin");
+        btnRegistrarAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarAdminActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -850,17 +871,18 @@ public class restaurante extends javax.swing.JFrame {
                     .addComponent(brnConfigurarClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnConfigurariEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnConfigurarPlatillos, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVerVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addComponent(JPanelinterfaz, javax.swing.GroupLayout.PREFERRED_SIZE, 704, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVerVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegistrarAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(JPanelinterfaz)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(133, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JPanelinterfaz, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(77, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(JPanelinterfaz, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnCVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -872,8 +894,10 @@ public class restaurante extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnConfigurarPlatillos, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnVerVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(22, 22, 22))
+                        .addComponent(btnVerVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRegistrarAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         pack();
@@ -935,12 +959,19 @@ public class restaurante extends javax.swing.JFrame {
             
             if(!"Elija Estado del Platillo".equals(op))
             {
-                Pla.setEstado_Pla(op);
-                PlaC.RegistroPlatillos(Pla);
-                JOptionPane.showMessageDialog(null, "Platillo Registrado");
-                Limpiar();
-                LimpiarTabla();
-                ListarPlatillos();
+                if(JOptionPane.showConfirmDialog(null, "Guardar Datos?", "Confirmar", 1)==0)
+                {
+                    Pla.setEstado_Pla(op);
+                    PlaC.RegistroPlatillos(Pla);
+                    JOptionPane.showMessageDialog(null, "Platillo Registrado");
+                    Limpiar();
+                    LimpiarTabla();
+                    ListarPlatillos();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Platillo no Registrado");
+                }
             }
             else
             {
@@ -1090,14 +1121,19 @@ public class restaurante extends javax.swing.JFrame {
                         int fila = TBPlatillos.getSelectedRow();
                         String cod = TBPlatillos.getValueAt(fila, 0).toString();
 
-                        ps = cone.prepareStatement("DELETE FROM platillo WHERE Id_Platillo = ?");
-                        ps.setString(1, cod);
-                        ps.execute();
-
-                        modelo.removeRow(fila);
-
-                        txtID_pla.setText("");
-                        JOptionPane.showMessageDialog(null, "Dato Eliminado");
+                        if(JOptionPane.showConfirmDialog(null, "Eliminar Datos?", "Confirmar", 1)==0)
+                        {
+                            ps = cone.prepareStatement("DELETE FROM platillo WHERE Id_Platillo = ?");
+                            ps.setString(1, cod);
+                            ps.execute();
+                            modelo.removeRow(fila);
+                            txtID_pla.setText("");
+                            JOptionPane.showMessageDialog(null, "Dato Eliminado");
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(null, "Dato no Eliminado");
+                        }
                 }
                 else
                 {
@@ -1132,22 +1168,29 @@ public class restaurante extends javax.swing.JFrame {
                     PreparedStatement ps;
                     ResultSet rs;
 
-                    ps = cone.prepareStatement("UPDATE platillo SET  Nombre_Platillo=?, Descripcion_Platillo=?, Precio_Platillo=?, Stock_Platillo=?, Estado_Platillo=? WHERE Id_Platillo=?");
+                    if(JOptionPane.showConfirmDialog(null, "Modificar Datos?", "Confirmar", 1)==0)
+                    {
+                        ps = cone.prepareStatement("UPDATE platillo SET  Nombre_Platillo=?, Descripcion_Platillo=?, Precio_Platillo=?, Stock_Platillo=?, Estado_Platillo=? WHERE Id_Platillo=?");
 
-                    ps.setString(1, txtNombre_pla.getText());
-                    ps.setString(2, txtDescrip_Pla.getText());
-                    ps.setDouble(3, Double.parseDouble(txtPrecio_Pla.getText()));
-                    ps.setInt(4, Integer.parseInt(txtStock_Pla.getText()));
-                    ps.setString(5, CBEstado_Pla.getSelectedItem().toString());
-                    ps.setString(6, txtID_pla.getText());
+                        ps.setString(1, txtNombre_pla.getText());
+                        ps.setString(2, txtDescrip_Pla.getText());
+                        ps.setDouble(3, Double.parseDouble(txtPrecio_Pla.getText()));
+                        ps.setInt(4, Integer.parseInt(txtStock_Pla.getText()));
+                        ps.setString(5, CBEstado_Pla.getSelectedItem().toString());
+                        ps.setString(6, txtID_pla.getText());
 
-                    ps.executeUpdate();
-                    
-                        Limpiar();
-                        LimpiarTabla();
-                        ListarPlatillos();
-                        JOptionPane.showMessageDialog(null, "Modificado");
-                    txtID_pla.setText("");
+                        ps.executeUpdate();
+
+                            Limpiar();
+                            LimpiarTabla();
+                            ListarPlatillos();
+                            JOptionPane.showMessageDialog(null, "Datos Modificados");
+                        txtID_pla.setText("");
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "Datos no Modificados");
+                    }
                 }
                 else
                 {
@@ -1222,6 +1265,12 @@ public class restaurante extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCrearPDFActionPerformed
 
+    private void btnRegistrarAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarAdminActionPerformed
+        this.setVisible(false);
+        Registro_Administrador RA = new Registro_Administrador();
+        RA.setVisible(true);
+    }//GEN-LAST:event_btnRegistrarAdminActionPerformed
+
     void Limpiar()
     {
         txtNombre_pla.setText("");
@@ -1291,6 +1340,7 @@ public class restaurante extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarVenta;
     private javax.swing.JButton btnEmpleado;
     private javax.swing.JButton btnGuardarPlatillo;
+    private javax.swing.JButton btnRegistrarAdmin;
     private javax.swing.JButton btnVerVentas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

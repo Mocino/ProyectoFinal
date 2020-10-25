@@ -238,10 +238,17 @@ public class Registrar_Cliente extends javax.swing.JFrame {
             {JOptionPane.showMessageDialog(null, "Elija su Estado, por Favor");}
             else
             {
-                cl.setEstado_cliente(op);
-                cC.RegistrarClientes(cl);
-                JOptionPane.showMessageDialog(null, "Cliente registrado");
-                limpiar();
+                if(JOptionPane.showConfirmDialog(null, "Guardar Datos?", "Confirmar", 1)==0)
+                {
+                    cl.setEstado_cliente(op);
+                    cC.RegistrarClientes(cl);
+                    JOptionPane.showMessageDialog(null, "Cliente registrado");
+                    limpiar();
+                }    
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Cliente no registrado");
+                }
             }  
         }
         else

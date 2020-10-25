@@ -19,6 +19,7 @@ public class ClienteC {
         try {
             con = cn.getConection();
             ps = con.prepareStatement(sql);
+            
             ps.setString(1, cl.getNombre_cli());
             ps.setString(2, cl.getApellido_cli());
             ps.setInt(3, cl.getNit_cli());

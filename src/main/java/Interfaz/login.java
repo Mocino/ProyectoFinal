@@ -24,7 +24,7 @@ public class login extends javax.swing.JFrame {
             
             if (lg.getCorreo_U()!=null && lg.getPass_U() != null)
             {
-             restaurante res = new restaurante();
+             restaurante res = new restaurante(lg);
              res.setVisible(true);
              dispose();
             }
