@@ -60,10 +60,12 @@ public class Correo extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         txtCorreo.setEditable(false);
+        txtCorreo.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel1.setText("Correo");
 
         txtRuta.setEditable(false);
+        txtRuta.setBackground(new java.awt.Color(204, 204, 204));
 
         ARchivo.setText("Archivo");
 

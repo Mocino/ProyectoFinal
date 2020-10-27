@@ -103,8 +103,10 @@ public class Registro_Administrador extends javax.swing.JFrame {
         jLabel2.setText("Nombre");
 
         txtnombre.setEditable(false);
+        txtnombre.setBackground(new java.awt.Color(204, 204, 204));
 
         txtCorreo.setEditable(false);
+        txtCorreo.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel1.setText("Correo");
 
@@ -218,12 +220,7 @@ public class Registro_Administrador extends javax.swing.JFrame {
 
     private void txtIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER)
-        {        
-            if(lg.getId_Empleado()==E.getId_E())
-            {
-                JOptionPane.showMessageDialog(null, "Error ya repetido");
-            }
-            
+        {   
             int ver = Integer.parseInt(txtID.getText());
             if(!"".equals(txtID.getText()))
             {

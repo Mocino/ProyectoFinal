@@ -252,8 +252,6 @@ public class Registrar_Empleado extends javax.swing.JFrame {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         limpiar();
         this.setVisible(false);
-        restaurante restau = new restaurante();
-        restau.setVisible(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtEdad_EKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEdad_EKeyTyped
@@ -264,6 +262,8 @@ public class Registrar_Empleado extends javax.swing.JFrame {
         txtNombre_Emp.setText("");
         txtApellido_E.setText("");
         txtApellido_E.setText("");
+        txtCorreo.setText("");
+        txtEdad_E.setText("");
         CBGenero.setSelectedItem("Elija su Genero");
         CBEstado.setSelectedItem("Elija Estado Actual");
     }
