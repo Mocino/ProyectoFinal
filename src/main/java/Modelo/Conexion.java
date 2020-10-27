@@ -28,7 +28,7 @@ public class Conexion {
     {
         InputStream in = null;
         try{
-        in = Files.newInputStream(FileSystems.getDefault().getPath("C:\\Conexion\\Restaurante1\\db_props.properties"));
+        in = Files.newInputStream(FileSystems.getDefault().getPath("C:\\Conexion\\Restaurante\\db_props.properties"));
         props.load(in);
         in.close();
     }

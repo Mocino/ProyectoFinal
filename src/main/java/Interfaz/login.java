@@ -11,6 +11,8 @@ public class login extends javax.swing.JFrame {
     
     public login() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false); 
     }
     
     public void validar()

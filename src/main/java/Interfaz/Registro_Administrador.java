@@ -1,41 +1,63 @@
 package Interfaz;
 
+import Modelo.Empleado;
+import Modelo.EmpleadoC;
 import Modelo.Login;
 import Modelo.LoginB;
+import Modelo.restricciones;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 public class Registro_Administrador extends javax.swing.JFrame {
 
     Login lg = new Login();
     LoginB log= new LoginB();
+    Empleado E = new Empleado();
+    EmpleadoC EC = new EmpleadoC();
+    restricciones restrin = new restricciones();
     
     public Registro_Administrador() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false); 
     }
     
     public void validar()
     {
-        String correo = txtCorreo.getText();
-        String pass = String.copyValueOf(txtPass.getPassword());
-        int ID = Integer.parseInt(txtID.getText());
-        String puesto = CBPuesto.getSelectedItem().toString();
-        String nombre = txtnombre.getText();
-        
-        
-        if(!"".equals(correo) || !"".equals(pass))
+        if(!"".equals(txtCorreo.getText()) && !"".equals(txtPass.getText()) && !"".equals(txtID.getText()) && !"".equals(txtnombre.getText()))
         {
-            lg.setCorreo_U(correo);
-            lg.setPass_U(pass);
-            lg.setId_Empleado(ID);
-            lg.setTipo_Emp_U(puesto);
-            lg.setNombre_U(nombre);
-            log.RegistrarUsuario(lg);
-            JOptionPane.showMessageDialog(null, "Ingresado");
-            this.setVisible(false);
-            login log = new login();
-            log.setVisible(true);
+            String correo = txtCorreo.getText();
+            String pass = String.copyValueOf(txtPass.getPassword());
+            int ID = Integer.parseInt(txtID.getText());
+            String puesto = CBPuesto.getSelectedItem().toString();
+            String nombre = txtnombre.getText();   
+
+            if(!"Elija Puesto".equals(puesto))
+            {
+                
+                if(!"".equals(correo) || !"".equals(pass))
+                {
+                   lg.setCorreo_U(correo);
+                   lg.setPass_U(pass);
+                   lg.setId_Empleado(ID);
+                   lg.setTipo_Emp_U(puesto);
+                   lg.setNombre_U(nombre);
+                   log.RegistrarUsuario(lg);
+                   JOptionPane.showMessageDialog(null, "Ingresado");
+                   this.setVisible(false);
+                   login log = new login();
+                   log.setVisible(true);
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Ingrese Puesto");
+            }
         }
-        
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Rellene los datos");
+        }
     }
 
     /**
@@ -47,28 +69,20 @@ public class Registro_Administrador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        txtCorreo = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        txtID = new javax.swing.JTextField();
+        btnRegistrar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        txtID = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtnombre = new javax.swing.JTextField();
+        txtCorreo = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         txtPass = new javax.swing.JPasswordField();
         CBPuesto = new javax.swing.JComboBox<>();
-        btnRegistrar = new javax.swing.JButton();
-        txtnombre = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("Correo");
-
-        jLabel2.setText("Nombre");
-
-        jLabel3.setText("ID");
-
-        txtPass.setText("jPasswordField1");
-
-        CBPuesto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Elija Puesto", "Admin", "Asistente" }));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnRegistrar.setText("Registrar");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
@@ -77,58 +91,106 @@ public class Registro_Administrador extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Cancelar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel3.setText("ID");
+
+        txtID.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtIDKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIDKeyTyped(evt);
+            }
+        });
+
+        jLabel2.setText("Nombre");
+
+        txtnombre.setEditable(false);
+
+        txtCorreo.setEditable(false);
+
+        jLabel1.setText("Correo");
+
         jLabel4.setText("Password");
+
+        CBPuesto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Elija Puesto", "Admin", "Asistente" }));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1)
+                    .addComponent(txtCorreo)
+                    .addComponent(CBPuesto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPass, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtnombre))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(CBPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(89, 89, 89)
-                        .addComponent(btnRegistrar))
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(51, 51, 51)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabel3)
-                                .addComponent(txtCorreo)
-                                .addComponent(txtPass)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(CBPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jLabel2)
-                                .addComponent(txtnombre)))))
-                .addContainerGap(74, Short.MAX_VALUE))
+                        .addComponent(btnRegistrar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jLabel1)
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CBPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(btnRegistrar)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRegistrar)
+                    .addComponent(jButton1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -137,6 +199,54 @@ public class Registro_Administrador extends javax.swing.JFrame {
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         validar();
     }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {        
+            if(lg.getId_Empleado()==E.getId_E())
+            {
+                JOptionPane.showMessageDialog(null, "Error ya repetido");
+            }
+            
+            int ver = Integer.parseInt(txtID.getText());
+            if(!"".equals(txtID.getText()))
+            {
+                if(ver!=lg.getId_Empleado())
+                {
+                    String id = txtID.getText();
+                    E = EC.BuscarEmp(id);
+                    
+                    if(E.getNombre_E()!= null)
+                    {
+                        txtnombre.setText(""+E.getNombre_E());
+                        txtCorreo.setText(""+E.getCorreo_E());
+                        txtPass.requestFocus();
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "Cliente No existe");
+                        txtnombre.setText("");
+                        txtCorreo.setText("");
+                        txtID.requestFocus();
+                    }
+                }
+            }
+            else
+           {
+                JOptionPane.showMessageDialog(null, "Ingrese ID");
+                txtID.requestFocus();
+            }
+        }
+        
+    }//GEN-LAST:event_txtIDKeyPressed
+
+    private void txtIDKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDKeyTyped
+        restrin.numberKeyPress(evt);
+    }//GEN-LAST:event_txtIDKeyTyped
 
     /**
      * @param args the command line arguments
@@ -176,10 +286,12 @@ public class Registro_Administrador extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CBPuesto;
     private javax.swing.JButton btnRegistrar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtID;
     private javax.swing.JPasswordField txtPass;

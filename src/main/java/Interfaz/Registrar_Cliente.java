@@ -8,6 +8,7 @@ package Interfaz;
 import Modelo.Cliente;
 import Modelo.ClienteC;
 import Modelo.Conexion;
+import Modelo.restricciones;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 
@@ -19,9 +20,12 @@ public class Registrar_Cliente extends javax.swing.JFrame {
     
     Cliente cl = new Cliente();
     ClienteC cC = new ClienteC();
+    restricciones restrin = new restricciones();
     
     public Registrar_Cliente() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false); 
     }
 
     /**
@@ -37,7 +41,6 @@ public class Registrar_Cliente extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        txtTipoCli = new javax.swing.JTextField();
         txtTelClie = new javax.swing.JTextField();
         CBEstadoCliente = new javax.swing.JComboBox<>();
         txtDireccion = new javax.swing.JTextField();
@@ -47,14 +50,13 @@ public class Registrar_Cliente extends javax.swing.JFrame {
         txtApellidoCliente = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtNombreCliente = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulario para Clientes");
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -82,16 +84,26 @@ public class Registrar_Cliente extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
+        txtTelClie.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTelClieKeyTyped(evt);
+            }
+        });
+
         CBEstadoCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Elija Estado", "Activo", "Inactivo" }));
         CBEstadoCliente.setToolTipText("");
+
+        txtNitCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNitClienteKeyTyped(evt);
+            }
+        });
 
         jLabel8.setText("Nit");
 
         jLabel2.setText("Apellido del Cliente");
 
         jLabel3.setText("Tel. del Cliente");
-
-        jLabel6.setText("Id Tipo Cliente");
 
         jLabel4.setText("Correo del Cliente");
 
@@ -128,17 +140,11 @@ public class Registrar_Cliente extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNitCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8)))
+                    .addComponent(jLabel3)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTipoCli, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
+                        .addComponent(txtTelClie, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtTelClie, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(CBEstadoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(CBEstadoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -163,12 +169,9 @@ public class Registrar_Cliente extends javax.swing.JFrame {
                     .addComponent(txtCorreoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel3))
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTipoCli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTelClie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(CBEstadoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -222,7 +225,7 @@ public class Registrar_Cliente extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         
-        if(!"".equals(txtNombreCliente.getText()) && !"".equals(txtApellidoCliente.getText()) && !"".equals(txtNitCliente.getText()) && !"".equals(txtCorreoCliente.getText()) && !"".equals(txtDireccion.getText()) && !"".equals(txtTelClie.getText()) && !"".equals(txtTipoCli.getText()))
+        if(!"".equals(txtNombreCliente.getText()) && !"".equals(txtApellidoCliente.getText()) && !"".equals(txtNitCliente.getText()) && !"".equals(txtCorreoCliente.getText()) && !"".equals(txtDireccion.getText()) && !"".equals(txtTelClie.getText()))
         {   
             cl.setNombre_cli(txtNombreCliente.getText());
             cl.setApellido_cli(txtApellidoCliente.getText());
@@ -230,7 +233,6 @@ public class Registrar_Cliente extends javax.swing.JFrame {
             cl.setCorreo_cli(txtCorreoCliente.getText());
             cl.setDireccion_cli(txtDireccion.getText());
             cl.setTel_cli(Integer.parseInt(txtTelClie.getText()));
-            cl.setIdTipo_cli(Integer.parseInt(txtTipoCli.getText()));
             
             String op = CBEstadoCliente.getSelectedItem().toString();
             
@@ -258,11 +260,16 @@ public class Registrar_Cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        limpiar();
-        this.setVisible(false);
-        restaurante restau = new restaurante();
-        restau.setVisible(true);
+            this.setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtNitClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNitClienteKeyTyped
+        restrin.numberKeyPress(evt);
+    }//GEN-LAST:event_txtNitClienteKeyTyped
+
+    private void txtTelClieKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelClieKeyTyped
+        restrin.numberKeyPress(evt);
+    }//GEN-LAST:event_txtTelClieKeyTyped
 
     void limpiar(){
         txtNombreCliente.setText("");
@@ -271,7 +278,6 @@ public class Registrar_Cliente extends javax.swing.JFrame {
         txtCorreoCliente.setText("");
         txtDireccion.setText("");
         txtTelClie.setText("");
-        txtTipoCli.setText("");
         CBEstadoCliente.setSelectedItem("Elija Estado");
     }
     /**
@@ -319,7 +325,6 @@ public class Registrar_Cliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
@@ -329,6 +334,5 @@ public class Registrar_Cliente extends javax.swing.JFrame {
     private javax.swing.JTextField txtNitCliente;
     private javax.swing.JTextField txtNombreCliente;
     private javax.swing.JTextField txtTelClie;
-    private javax.swing.JTextField txtTipoCli;
     // End of variables declaration//GEN-END:variables
 }

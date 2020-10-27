@@ -15,7 +15,7 @@ public class ClienteC {
     ResultSet rs;
     
     public boolean RegistrarClientes(Cliente cl){
-        String sql = "INSERT INTO cliente (Nombre_Cliente, Apellido_Cliente, Nit_Cliente, Correo_Cliente, Direccion_Cliente, Telefono_Cliente, Id_TipoCliente, Estado_Cliente) VALUES (?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO cliente (Nombre_Cliente, Apellido_Cliente, Nit_Cliente, Correo_Cliente, Direccion_Cliente, Telefono_Cliente, Estado_Cliente) VALUES (?,?,?,?,?,?,?)";
         try {
             con = cn.getConection();
             ps = con.prepareStatement(sql);
@@ -26,8 +26,7 @@ public class ClienteC {
             ps.setString(4, cl.getCorreo_cli());
             ps.setString(5, cl.getDireccion_cli());
             ps.setInt(6, cl.getTel_cli());
-            ps.setInt(7, cl.getIdTipo_cli());
-            ps.setString(8, cl.getEstado_cliente());
+            ps.setString(7, cl.getEstado_cliente());
             ps.execute();
             
             return true;
@@ -64,6 +63,7 @@ public class ClienteC {
                 cli.setNombre_cli(rs.getString("Nombre_Cliente"));
                 cli.setTel_cli(rs.getInt("Telefono_Cliente"));
                 cli.setDireccion_cli(rs.getString("Direccion_Cliente"));
+                cli.setCorreo_cli(rs.getString("Correo_Cliente"));
             }
         } catch (Exception e) 
         {
@@ -90,7 +90,6 @@ public class ClienteC {
             c.setCorreo_cli(rs.getString("Correo_Cliente"));
             c.setDireccion_cli(rs.getString("Direccion_Cliente"));
             c.setTel_cli(rs.getInt("Telefono_Cliente"));
-            c.setIdTipo_cli(rs.getInt("Id_TipoCliente"));
             c.setEstado_cliente(rs.getString("Estado_Cliente"));
             Listacl.add(c);
             }

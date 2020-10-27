@@ -38,6 +38,28 @@ public class LoginB {
         return l;
     }
     
+    public Login BuscarU(String idU)
+    {
+        Login log = new Login();
+        String sql = "SELECT * FROM usuario WHERE Id_Usuario=?";
+        try {
+            con = cn.getConection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, idU);
+            rs = ps.executeQuery();
+            
+            if(rs.next())
+            {
+                log.setCorreo_U(rs.getString("Correo_Usuario"));
+                log.setNombre_U(rs.getString("Nombre_Usuario"));
+            }
+        } catch (Exception e) 
+        {
+            System.out.println("Error en BuscarCliente"+e);
+        }
+        return log;
+    }
+    
     public boolean RegistrarUsuario(Login log)
     {
         String sql = "INSERT INTO usuario (Correo_Usuario, Pass_Usuario, Id_Empleado_Usuario, Tipo_Empleado_Usuario, Nombre_Usuario) VALUES (?,?,?,?,?)";

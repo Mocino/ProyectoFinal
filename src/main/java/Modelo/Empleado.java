@@ -11,14 +11,14 @@ package Modelo;
  */
 public class Empleado {
     int id_E;
-        String nombre_E;
-        String apellido_E;
-        String Correo_E;
-        int edad_E;
-        String genero_E;
-        String estado_E;
+    String nombre_E;
+    String apellido_E;
+    String Correo_E;
+    int edad_E;
+    String genero_E;
+    String estado_E;
         
-        public Empleado(){}
+    public Empleado(){}
 
     public Empleado(int id_E, String nombre_E, String apellido_E, String Correo_E, int edad_E, String genero_E, String estado_E) {
         this.id_E = id_E;

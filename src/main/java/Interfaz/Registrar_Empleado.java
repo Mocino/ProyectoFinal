@@ -7,6 +7,7 @@ package Interfaz;
 
 import Modelo.Empleado;
 import Modelo.EmpleadoC;
+import Modelo.restricciones;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,11 +18,14 @@ public class Registrar_Empleado extends javax.swing.JFrame {
     
     Empleado emp = new Empleado();
     EmpleadoC empL = new EmpleadoC();
+    restricciones restrin = new restricciones();
     
     
     
     public Registrar_Empleado() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false); 
     }
 
     /**
@@ -49,7 +53,7 @@ public class Registrar_Empleado extends javax.swing.JFrame {
         CBEstado = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -79,6 +83,12 @@ public class Registrar_Empleado extends javax.swing.JFrame {
         jLabel2.setText("Apellido del Empleado");
 
         jLabel3.setText("Edad");
+
+        txtEdad_E.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtEdad_EKeyTyped(evt);
+            }
+        });
 
         jLabel4.setText("Correo");
 
@@ -245,6 +255,10 @@ public class Registrar_Empleado extends javax.swing.JFrame {
         restaurante restau = new restaurante();
         restau.setVisible(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtEdad_EKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEdad_EKeyTyped
+        restrin.numberKeyPress(evt);
+    }//GEN-LAST:event_txtEdad_EKeyTyped
 
     void limpiar(){
         txtNombre_Emp.setText("");

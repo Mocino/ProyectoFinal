@@ -27,7 +27,7 @@ public class EmpleadoC {
             ps.setInt(4, emp.getEdad_E());
             ps.setString(5, emp.getGenero_E());
             ps.setString(6, emp.getEstado_E());           
-            ps.executeQuery();
+            ps.execute();
             
             return true;
         } catch (SQLException e) {
@@ -43,6 +43,28 @@ public class EmpleadoC {
             System.out.println("Error CB"+e.toString());
             }
         }
+    }
+    public Empleado BuscarEmp(String idE)
+    {
+        Empleado emp = new Empleado();
+        String sql = "SELECT * FROM empleado WHERE Id_Empleado=?";
+        try {
+            con = cn.getConection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, idE);
+            rs = ps.executeQuery();
+            
+            if(rs.next())
+            {
+                emp.setNombre_E(rs.getString("Nombre_Empleado"));
+                emp.setCorreo_E(rs.getString("Correo_Empleado"));
+                
+            }
+        } catch (Exception e) 
+        {
+            System.out.println("Error en BuscarCliente"+e);
+        }
+        return emp;
     }
     
    public List ListarEmpleado(){
