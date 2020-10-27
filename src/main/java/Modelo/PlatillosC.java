@@ -59,6 +59,8 @@ public class PlatillosC {
                 plat.setDescripcion_Pla(rs.getString("Descripcion_Platillo"));
                 plat.setPrecio_Pla(rs.getDouble("Precio_Platillo"));
                 plat.setStock_Pla(rs.getInt("Stock_Platillo"));
+                plat.setEstado_Pla(rs.getString("Estado_Platillo"));
+                
             }
         } catch (Exception e) {
             System.out.println("Error en BuscarPlatillo: "+ e);

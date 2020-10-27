@@ -64,6 +64,7 @@ public class ClienteC {
                 cli.setTel_cli(rs.getInt("Telefono_Cliente"));
                 cli.setDireccion_cli(rs.getString("Direccion_Cliente"));
                 cli.setCorreo_cli(rs.getString("Correo_Cliente"));
+                cli.setEstado_cliente(rs.getString("Estado_Cliente"));
             }
         } catch (Exception e) 
         {
