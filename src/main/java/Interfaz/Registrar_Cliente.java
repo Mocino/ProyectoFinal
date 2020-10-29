@@ -20,7 +20,7 @@ public class Registrar_Cliente extends javax.swing.JFrame {
     
     Cliente cl = new Cliente();
     ClienteC cC = new ClienteC();
-    restricciones restrin = new restricciones();
+    restricciones restrin = new restricciones(); //Validadciones en el txt
     
     public Registrar_Cliente() {
         initComponents();
@@ -227,13 +227,14 @@ public class Registrar_Cliente extends javax.swing.JFrame {
         
         if(!"".equals(txtNombreCliente.getText()) && !"".equals(txtApellidoCliente.getText()) && !"".equals(txtNitCliente.getText()) && !"".equals(txtCorreoCliente.getText()) && !"".equals(txtDireccion.getText()) && !"".equals(txtTelClie.getText()))
         {   
+            //Establecer valores de los txt
             cl.setNombre_cli(txtNombreCliente.getText());
             cl.setApellido_cli(txtApellidoCliente.getText());
             cl.setNit_cli(Integer.parseInt(txtNitCliente.getText()));
             cl.setCorreo_cli(txtCorreoCliente.getText());
             cl.setDireccion_cli(txtDireccion.getText());
             cl.setTel_cli(Integer.parseInt(txtTelClie.getText()));
-            
+           //validar el combobox
             String op = CBEstadoCliente.getSelectedItem().toString();
             
             if(op.equals("Elija Estado"))

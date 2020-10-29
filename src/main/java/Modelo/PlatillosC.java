@@ -55,6 +55,7 @@ public class PlatillosC {
             rs = ps.executeQuery();
             if (rs.next())
             {
+                //Traera la informacion
                 plat.setNombre_Pla(rs.getString("Nombre_Platillo"));
                 plat.setDescripcion_Pla(rs.getString("Descripcion_Platillo"));
                 plat.setPrecio_Pla(rs.getDouble("Precio_Platillo"));

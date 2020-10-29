@@ -83,6 +83,7 @@ public class ClienteC {
             rs = ps.executeQuery();
             while(rs.next())
             {
+                //Instancia
             Cliente c = new Cliente();            
             c.setId_cli(rs.getInt("Id_Cliente"));
             c.setNombre_cli(rs.getString("Nombre_Cliente"));

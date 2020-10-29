@@ -12,7 +12,7 @@ public class login extends javax.swing.JFrame {
     public login() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.setResizable(false); 
+        this.setResizable(false); //No agrandar minimizar
     }
     
     public void validar()
@@ -24,17 +24,17 @@ public class login extends javax.swing.JFrame {
         {
             lg = login.log(correo, pass);
             
-            if (lg.getCorreo_U()!=null && lg.getPass_U() != null)
+            if (lg.getCorreo_U()!= null && lg.getPass_U() != null)
             {
              restaurante res = new restaurante(lg);
              res.setVisible(true);
              dispose();
             }
-            else{
+            else
+            {
                 JOptionPane.showMessageDialog(null, "Error al ingresar correo y contraseña");
             }
         }
-        
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

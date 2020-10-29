@@ -2,6 +2,7 @@ package Modelo;
 
 public class Login {
     
+    //Variables Encapsuladas
     int id_u;
     String correo_U;
     String pass_U;
@@ -11,6 +12,7 @@ public class Login {
     
     public Login(){}
 
+    //Constructor
     public Login(int id_u, String correo_U, String pass_U, int Id_Empleado, String Tipo_Emp_U, String Nombre_U) {
         this.id_u = id_u;
         this.correo_U = correo_U;
@@ -20,6 +22,7 @@ public class Login {
         this.Nombre_U = Nombre_U;
     }
 
+    //Crear sus Getter and Setters
     public int getId_u() {
         return id_u;
     }

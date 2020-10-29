@@ -35,13 +35,14 @@ public class FacturaC {
     public int RegistrarFactura(Factura F)
     {
         
-        String sql = "INSERT INTO factura (Cliente_Factura, Total_Factura, Fecha_Factura) VALUES (?,?,?)";
+        String sql = "INSERT INTO factura (Cliente_Factura, Empleado_Factura, Total_Factura, Fecha_Factura) VALUES (?,?,?,?)";
         try {
             con = cn.getConection();
             ps = con.prepareStatement(sql);
             ps.setString(1, F.getCliente_Fac());
-            ps.setDouble(2, F.getTotal_Fac());
-            ps.setString(3, F.getFecha_Fac());
+            ps.setString(2, F.getEmplado_Fac());
+            ps.setDouble(3, F.getTotal_Fac());
+            ps.setString(4, F.getFecha_Fac());
             ps.execute();
         } catch (SQLException e) {
             System.out.println("Error en Registar Factura: "+e.toString());
@@ -70,6 +71,7 @@ public class FacturaC {
                 Factura Fac = new Factura();
                 Fac.setId_Fac(rs.getInt("Id_Factura"));
                 Fac.setCliente_Fac(rs.getString("Cliente_Factura"));
+                Fac.setEmplado_Fac(rs.getString("Empleado_Factura"));
                 Fac.setTotal_Fac(rs.getInt("Total_Factura"));
                 Fac.setFecha_Fac(rs.getString("Fecha_Factura"));
                 ListFac.add(Fac);

@@ -64,6 +64,7 @@ public class restaurante extends javax.swing.JFrame {
     
     DefaultTableModel modelo = new DefaultTableModel();
     DefaultTableModel tmp = new DefaultTableModel();
+    
     int item;
     double TotalPagar = 0.00;
     
@@ -81,28 +82,40 @@ public class restaurante extends javax.swing.JFrame {
     
     public restaurante(Login priv){
         initComponents();
+        //Bloquera la movilizacion de las pestañas
+        JPestañas.setEnabledAt(0,false);
+        JPestañas.setEnabledAt(1,false);
+        JPestañas.setEnabledAt(2,false);
+        JPestañas.setEnabledAt(3,false);
+        JPestañas.setEnabledAt(4,false);
+        JPestañas.setEnabledAt(5,false);
+        
         this.setLocationRelativeTo(null);
         this.setResizable(false); 
         if(priv.getTipo_Emp_U().equals("Asistente")){
+            //Solo manipulables por el administrador
             btnConfigurariEmpleados.setEnabled(false);
             brnConfigurarClientes.setEnabled(false);
             btnRegistrarAdmin.setEnabled(false);
+            LabelNombre.setText(priv.getNombre_U());
         }
-        txtIDCli.setEnabled(false);
-        txtIDEmpleado.setEnabled(false);
-        txtID_pla.setEnabled(false);
-        txtIDVentas1.setEnabled(false);
+        else
+        {
+            LabelNombre.setText(priv.getNombre_U()); //El usuario que entro
+            txtIDCli.setEnabled(false);
+            txtIDEmpleado.setEnabled(false);
+            txtID_pla.setEnabled(false);
+            txtIDVentas1.setEnabled(false);
+        }
         
         
     }
 
-    
-    
     public void ListarCliente(){
         List<Cliente> ListarCli = cliC.ListarCliente();
         modelo = (DefaultTableModel) TBCliente.getModel(); 
         
-        Object[] ob = new Object[9];
+        Object[] ob = new Object[8];
         for(int i = 0 ; i<ListarCli.size(); i++)
         {
             ob[0] = ListarCli.get(i).getId_cli();
@@ -160,13 +173,14 @@ public class restaurante extends javax.swing.JFrame {
     {
         List<Factura> ListarFAC = F.ListarFacturas();
         modelo = (DefaultTableModel) TBFactura.getModel();
-        Object[] ob = new Object[4];
+        Object[] ob = new Object[5];
         for(int i = 0 ; i<ListarFAC.size(); i++)
         {
             ob[0] = ListarFAC.get(i).getId_Fac();
             ob[1] = ListarFAC.get(i).getCliente_Fac();
-            ob[2] = ListarFAC.get(i).getTotal_Fac();
-            ob[3] = ListarFAC.get(i).getFecha_Fac();
+            ob[2] = ListarFAC.get(i).getEmplado_Fac();
+            ob[3] = ListarFAC.get(i).getTotal_Fac();
+            ob[4] = ListarFAC.get(i).getFecha_Fac();
             modelo.addRow(ob);
         }
         TBFactura.setModel(modelo);
@@ -190,6 +204,8 @@ public class restaurante extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel11 = new javax.swing.JPanel();
+        jLabel31 = new javax.swing.JLabel();
+        LabelNombre = new javax.swing.JLabel();
         JPestañas = new javax.swing.JTabbedPane();
         JPANELinterfaz = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -309,18 +325,36 @@ public class restaurante extends javax.swing.JFrame {
 
         jPanel11.setBackground(new java.awt.Color(0, 51, 102));
 
+        jLabel31.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel31.setText("Empleado:");
+
+        LabelNombre.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        LabelNombre.setForeground(new java.awt.Color(255, 255, 255));
+        LabelNombre.setText("----------");
+
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 730, Short.MAX_VALUE)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(LabelNombre)
+                .addContainerGap(597, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel31)
+                    .addComponent(LabelNombre))
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 100, 730, 30));
+        getContentPane().add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, 730, 30));
 
         JPestañas.setBackground(new java.awt.Color(255, 255, 255, 225));
 
@@ -1252,7 +1286,7 @@ public class restaurante extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID Factura", "Cliente", "Total", "Fecha"
+                "ID Factura", "Cliente", "Vendedor", "Total", "Fecha"
             }
         ));
         TBFactura.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1304,7 +1338,7 @@ public class restaurante extends javax.swing.JFrame {
 
         JPestañas.addTab("tab6", jPanel1);
 
-        getContentPane().add(JPestañas, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 100, 730, 370));
+        getContentPane().add(JPestañas, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, 730, 370));
 
         btnCVenta.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnCVenta.setText("Hacer Venta");
@@ -1374,30 +1408,23 @@ public class restaurante extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-//src/main/java/IMG/cafe.png
+//Todavia no
     private void btnClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClienteActionPerformed
-        
+        //Abrir Registro Clientes
         Registrar_Cliente RC = new Registrar_Cliente();
         RC.setVisible(true);
     }//GEN-LAST:event_btnClienteActionPerformed
 
     private void btnEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpleadoActionPerformed
-        
+        //Abrir Registro 
         Registrar_Empleado RC = new Registrar_Empleado();
         RC.setVisible(true);
     }//GEN-LAST:event_btnEmpleadoActionPerformed
-
+     //Botones para mobilizarse 
     private void btnCVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCVentaActionPerformed
-        JPestañas.setSelectedIndex(0);
-        
-        JPestañas.setEnabledAt(0, false);
-        JPestañas.setEnabledAt(1, false);
-        JPestañas.setEnabledAt(2, false);
-        JPestañas.setEnabledAt(3, false);
-        JPestañas.setEnabledAt(4, false);
-        JPestañas.setEnabledAt(5, false);
+        JPestañas.setSelectedIndex(0);//numero indica el lugar del panel
     }//GEN-LAST:event_btnCVentaActionPerformed
-
+   
     private void btnCreacionCyEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreacionCyEActionPerformed
         JPestañas.setSelectedIndex(1);
     }//GEN-LAST:event_btnCreacionCyEActionPerformed
@@ -1437,7 +1464,7 @@ public class restaurante extends javax.swing.JFrame {
                     return;
                 }
             }
-            
+            //pla objeto de clase platillo se establecen los datos de los campos
             Pla.setNombre_Pla(txtNombre_pla.getText());
             Pla.setDescripcion_Pla(txtDescrip_Pla.getText());
             Pla.setPrecio_Pla(Double.parseDouble(txtPrecio_Pla.getText()));
@@ -1513,9 +1540,11 @@ public class restaurante extends javax.swing.JFrame {
                 String descrip = txtDescripccionVenta.getText();
                 int cantidad = Integer.parseInt(txtCantidadVenta.getText());
                 double precio = Double.parseDouble(txtPrecioVenta.getText());
+                
                 double total = cantidad * precio;
                 
                 int stock = Integer.parseInt(txtStockVenta.getText());
+                
                 if(stock >= cantidad)
                 {
                     item = item+1;
@@ -1529,7 +1558,7 @@ public class restaurante extends javax.swing.JFrame {
                         }
                     }
                     ArrayList lista = new ArrayList();
-                    lista.add(item);
+                    lista.add(item); //Añade una linea/Fila
                     lista.add(id);
                     lista.add(platio);
                     lista.add(descrip);
@@ -1754,6 +1783,7 @@ public class restaurante extends javax.swing.JFrame {
         {
             if(!"".equals(txtNombreVenta.getText()))
             {
+                JOptionPane.showMessageDialog(null, "Venta Hecha¡");
                 correos();   
                 RegistrarFactura();
                 ActualizarStock();
@@ -2180,6 +2210,7 @@ public class restaurante extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> CBGeneroEmpleado;
     private javax.swing.JPanel JPANELinterfaz;
     private javax.swing.JTabbedPane JPestañas;
+    private javax.swing.JLabel LabelNombre;
     private javax.swing.JLabel Labeltotal;
     private javax.swing.JTable TBCliente;
     private javax.swing.JTable TBEmpleado;
@@ -2235,6 +2266,7 @@ public class restaurante extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     public javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2329,6 +2361,7 @@ public class restaurante extends javax.swing.JFrame {
     { 
         double monto = TotalPagar;
         Fac.setCliente_Fac(txtNombreVenta.getText());
+        Fac.setEmplado_Fac(LabelNombre.getText());
         Fac.setTotal_Fac(monto);
         Fac.setFecha_Fac(fechaAct);
         F.RegistrarFactura(Fac);
@@ -2374,10 +2407,11 @@ public class restaurante extends javax.swing.JFrame {
             String nom = "Restaurante Hyrule";
             String Tel = "55685063";
             String dir = "Rabinal";
+            String empleado = LabelNombre.getText();
             
             
             Encabezado.addCell("");
-            Encabezado.addCell("Nombre:"+nom+"\nTelefono:"+Tel+"\nDireccion:"+dir);
+            Encabezado.addCell("Nombre:"+nom+"\nTelefono:"+Tel+"\nDireccion:"+dir+"\nVendedor:"+empleado);
             Encabezado.addCell(fecha);
             doc.add(Encabezado);
             
@@ -2468,7 +2502,7 @@ public class restaurante extends javax.swing.JFrame {
             
             Paragraph info = new Paragraph();
             info.add(Chunk.NEWLINE);
-            info.add("Cuenta: "+TotalPagar);
+            info.add("Cuenta a pagar: "+TotalPagar);
             info.setAlignment(Element.ALIGN_RIGHT);
             doc.add(info);
             

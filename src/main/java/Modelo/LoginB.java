@@ -7,22 +7,27 @@ import java.sql.SQLException;
 
     
 public class LoginB {
-    
+   //Variables
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
+    
     Conexion cn = new Conexion();
     
-    public Login log (String correo, String pass){
+    //Metodo
+    //consultamos y validamos
+    public Login log (String correo, String pass){ //Parametros
         Login l = new Login();
         String sql = "SELECT * FROM usuario WHERE Correo_Usuario=? AND Pass_Usuario=?";
         try {
+            //Se Ejecuta
             con = cn.getConection();
             ps = con.prepareStatement(sql);
+            
             ps.setString(1, correo);
             ps.setString(2, pass);
             rs = ps.executeQuery();
-            //Id_Usuario, Correo_Usuario, Pass_Usuario, Id_Empleado, Tipo_Empleado, Nombre
+            //Valida
             if(rs.next())
             {
                 l.setId_u(rs.getInt("Id_Usuario"));
@@ -32,6 +37,7 @@ public class LoginB {
                 l.setTipo_Emp_U(rs.getString("Tipo_Empleado_Usuario"));
                 l.setNombre_U(rs.getString("Nombre_Usuario"));
             }
+            
         } catch (SQLException e) {
             System.out.println("Error en LogB/Log log: "+e);
         }
